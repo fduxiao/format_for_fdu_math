@@ -19,6 +19,10 @@
 
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{titlesec}
+\usepackage[titletoc]{appendix}
+
+% 指定包\usepackage{pythonhighlight}，如果需要别的语言的话，请找对应的包
+\usepackage{pythonhighlight}
 
 % 公式编号的计数格式, 在章内计数
 \numberwithin{equation}{chapter}
@@ -68,21 +72,32 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
 %Styles for chapters/section
-%若要将章标题左对齐, 用下面这个语句替换相应的设置
-%\CTEXsetup[nameformat={\raggedright\zihao{3}\bfseries},%
-\CTEXsetup[nameformat={\zihao{3}\heiti},%
-           titleformat={\zihao{3}},%
-           beforeskip={0.8cm},afterskip={1.2cm}]{chapter}
-\CTEXsetup[nameformat={\zihao{4}\bfseries},%
-           titleformat={\zihao{4}},%
-           name={第~,~节},number={\arabic{section}},%
-           beforeskip={0.4cm},afterskip={0.4cm}]{section}
-\CTEXsetup[format={\zihao{-4}\bfseries},%
-           titleformat={\zihao{-4}},%
-           number={\arabic{section}.\arabic{subsection}.},%
-           beforeskip={0.4cm},afterskip={0.4cm}]{subsection}
-\CTEXoptions[abstractname={摘要：}]
-\CTEXoptions[bibname={\heiti 参考文献}]
+\ctexset{
+    chapter={
+        % 若要将章标题左对齐, 用下面这个语句替换相应的设置
+        % nameformat={\raggedright\zihao{3}\bfseries},
+        nameformat={\zihao{3}\heiti},
+        titleformat={\zihao{3}},
+        beforeskip={0.8cm},
+        afterskip={1.2cm},
+    },
+    section={
+        nameformat={\zihao{4}\bfseries},
+        titleformat={\zihao{4}},
+        name={第~,~节},
+        number={\arabic{section}},
+        beforeskip={0.4cm},
+        afterskip={0.4cm},
+    },
+    subsection={
+        format={\zihao{-4}\bfseries},
+        titleformat={\zihao{-4}},
+        number={\arabic{section}.\arabic{subsection}.},
+        beforeskip={0.4cm},afterskip={0.4cm}]{subsection}
+    },
+    abstractname={摘要：},
+    bibname={\heiti 参考文献}
+}
 
 \renewcommand{\thepage}{\roman{page}}
 \setcounter{page}{1}
@@ -211,7 +226,18 @@ W_{i,a}^{\text{new}} & \leftarrow & \frac{W_{i,a}}{\sum_{j}W_{j,a}}
 \begin{equation}
 \lim_{n\to +\infty}\Big(1+{1\over n}\Big)^n=e.
 \end{equation}
-定义、定理、例子等的编号格式也可以用类似命令.
+定义、定理、例子等的编号格式也可以用类似命令. 
+
+引用附录的公式也和之前相同: 
+
+\begin{theorem}
+$A(1) + B(1) \neq C(1)$
+    
+\end{theorem}
+\begin{proof}[proof]
+    根据\ref{appendix}，显然有$\forall x. A(x) + B(x) \neq C(x)$
+\end{proof}
+
 
 \chapter{表格和图片}
 \begin{table}[htbp]\centering
@@ -311,6 +337,40 @@ evolution equations, Pitman Monographs and Surveys in Pure and
 Applied Mathematics, 45, Longman Scientific \& Technical, Harlow.
 \end{thebibliography}
 
+\begin{appendices}
+    % 用大写英文字母以及罗马数字来表示附录的章节
+    \renewcommand{\thechapter}{\Alph{chapter}}
+    \ctexset{
+        chapter={
+            nameformat={\zihao{3}\heiti},
+            titleformat={\zihao{3}},
+            number={\Alph{chapter}},
+            name={~},
+        },
+        section={
+            nameformat={\zihao{4}\bfseries},
+            titleformat={\zihao{4}},
+            format={\Large\bfseries},
+            name={~},number={\Roman{section}}
+        }
+    }
+    \def\theequation{\Alph{chapter}.\arabic{equation}}
+    \def\thedefinition{\Alph{chapter}.\arabic{definition}.}
+    \chapter{Preliminaries}
+    \section{补充定理}
+    \begin{theorem}\label{appendix}
+        $A + B \neq C$
+    \end{theorem}
+    \begin{proof}[proof]
+        证明内容
+    \end{proof}
+    \chapter{代码列表}
+    \section{python代码}
+    \begin{python}
+if __name__ == "__main__":
+    print("hello world")
+    \end{python}
+\end{appendices}
 
 
 %\bibliographystyle{plain}
